@@ -228,6 +228,16 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+
+# st.markdown("""
+# <style>
+#     [data-testid=stSidebar] {
+#         background-color: DarkSlateGray;
+#     }
+# </style>
+# """, unsafe_allow_html=True)
+
+
 with st.sidebar:
 
     st.markdown('# SAIL: Symbolic Representation Explorer')
@@ -266,31 +276,72 @@ with st.sidebar:
 tab_desc, tab_dataset,tab_methods,tab_1nn_classification,tab_classification_accuracy,tab_tlb,tab_runtime,tab_references = st.tabs(["Description", "Datasets",'Methods',"1NN-Classification Accuracy","BOP Classification Accuracy","Tightness of Lower Bound","Runtime Analysis","References"]) 
 
 
+# with tab_desc:
+#     st.markdown('# SAIL: A Voyage to Symbolic Representation Solutions for Time-Series Analysis')
+#     st.markdown(description_intro1)
+#     background = Image.open('./data/sail_demo_pipeline.png')
+#     col1, col2, col3 = st.columns([1.2, 5, 0.2])
+#     col2.image(background, width=900, caption='Overview of the SAIL representation method.')
+#     st.markdown(description_intro2)
+#     # st.markdown(description_intro2)
+#     # background = Image.open('./data/taxonomy.png')
+#     # col1, col2, col3 = st.columns([1.2, 5, 0.2])
+#     # col2.image(background, width=900, caption='Taxonomy of time-series clustering methods in Odyssey.')
+
 with tab_desc:
     st.markdown('# SAIL: A Voyage to Symbolic Representation Solutions for Time-Series Analysis')
     st.markdown(description_intro1)
+
+    # Load image
     background = Image.open('./data/sail_demo_pipeline.png')
-    col1, col2, col3 = st.columns([1.2, 5, 0.2])
-    col2.image(background, width=900, caption='Overview of the SAIL representation method.')
+
+    # Center align the image and add a caption
+    col1, col2, col3 = st.columns([1, 5, 1])  # Adjust column widths for centering
+    with col2:
+        st.image(background, use_container_width=True)
+        st.markdown("<p style='text-align: center; font-style: italic;'>Overview of the SAIL representation method.</p>", unsafe_allow_html=True)
+
     st.markdown(description_intro2)
-    # st.markdown(description_intro2)
-    # background = Image.open('./data/taxonomy.png')
-    # col1, col2, col3 = st.columns([1.2, 5, 0.2])
-    # col2.image(background, width=900, caption='Taxonomy of time-series clustering methods in Odyssey.')
+
+
+
 
 with tab_dataset:
     st.markdown('# Dataset Description')
     st.markdown(text_description_dataset)
     AgGrid(characteristics_df)
 
+# with tab_methods:
+#     st.markdown('# Method Description')
+#     baseline = Image.open('./data/baseline_methods_v3.png')
+#     col1, col2, col3 = st.columns([1.2, 5, 0.2])
+#     col2.image(baseline, width=900, caption='Summary of basline methods SAX, SFA, and variants.')
+#     st.markdown(text_description_models,unsafe_allow_html=True)
+#     spartan_pipeline = Image.open('./data/spartan_pipeline.png')
+#     col2.image(spartan_pipeline,width=900, caption='Overview of SPARTAN representation method.')
+
 with tab_methods:
     st.markdown('# Method Description')
+
+    # Load and display the baseline methods image
     baseline = Image.open('./data/baseline_methods_v3.png')
-    col1, col2, col3 = st.columns([1.2, 5, 0.2])
-    col2.image(baseline, width=900, caption='Summary of basline methods SAX, SFA, and variants.')
-    st.markdown(text_description_models,unsafe_allow_html=True)
+    col1, col2, col3 = st.columns([1, 5, 1])  # Center alignment
+    with col2:
+        st.image(baseline, use_container_width=True)
+        st.markdown("<p style='text-align: center; font-style: italic;'>Summary of baseline methods SAX, variants, and SFA.</p>", unsafe_allow_html=True)
+
+    # Load and display the SPARTAN pipeline image
     spartan_pipeline = Image.open('./data/spartan_pipeline.png')
-    col2.image(spartan_pipeline,width=900, caption='Overview of SPARTAN representation method.')
+    col1, col2, col3 = st.columns([1, 5, 1])  # Center alignment
+    with col2:
+        st.image(spartan_pipeline, use_container_width=True)
+        st.markdown("<p style='text-align: center; font-style: italic;'>Overview of SPARTAN representation method.</p>", unsafe_allow_html=True)
+
+    # Description text
+    # st.markdown(text_description_models, unsafe_allow_html=True)
+    st.markdown(get_text_description_models(), unsafe_allow_html=True)
+
+    
 
 with tab_classification_accuracy:
 

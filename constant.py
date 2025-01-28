@@ -151,23 +151,118 @@ varying lengths. We employ linear interpolation to fill the missing values and r
 in each dataset. Here we present the characteritics of each dataset in the UCR archive.
 """
 
-text_description_models = f"""
-We present the models which are being compared here, each with a short description of their methodology and a citation to the work in which they were introduced.
+# text_description_models = f"""
+# We present the models which are being compared here, each with a short description of their methodology and a citation to the work in which they were introduced.
 
-| <span style="background-color:DarkSlateGray;color:LavenderBlush;font-weight:bold"> Symbolic Representation </span>  | <span style='background-color:DarkSlateGray;color:LavenderBlush;font-weight:bold'> Description </span> | <span style='background-color:DarkSlateGray;color:LavenderBlush;font-weight:bold'> Reference  </span> |
-|:------------------|:----------------------------------|:------------------------------------|
-||  **SAX and SAX-variant methods**
-|SAX             | SAX builds on Piecewise Aggregate Approximation to approximate a time series using the means of equal-length, non-overlapping segments of the time series. SAX converts these approximations to symbols by dividing the range of possible values in the number line according to equi-probability sections of a normal distribution with mean zero and unit variance.|                 [2]          |
-|ESAX              | ESAX uses a similar methodology to SAX but extracts two additional features from each segment: the minimum and maximum value of the segments. This is done in order to capture more information from the segments than the mean, though this triples the storage requiremnts for an equal number of segments between methods.                                |          [3]                 |
-|TSFSAX              |  TSFSAX introduces a novel trend feature based on trend points in the segments which is later discretized along with the mean.                           |            [4]               |
-|SAX-DR             | SAX-DR derives an additional categorization of the trend of each segment, classifying each as concave, convex, or linear in order to encode local shape of the segments.                              |           [5]                |
-|SAX-VFD          |SAX-VFD adopts 18 features from three categories: statistical, entropy and fluctuation features. An optimization process is then applied to determine an optimal feature fector to be used from among these.                         |           [6]                 |
-|1D-SAX          |1d-SAX extends the classic SAX feature with a new slope feature extracted using linear regression on each segment.|       [7]                     |
-| |**DFT-Based Representation Method**
-|SFA           | SFA, leverages Discrete Fourier Transform (DFT) to capture the frequency information from the Fourier domain. In addition, Multiple Coefficient Binning (MCB) is also proposed as the standard discretization technique for alphabet dictionaries                                |        [8]                    |
-|  | **Newly Proposed Symbolic Representation Method**
-|SPARTAN              | SPARTAN utilizes a data adaptive dimensionality reduction method to extract information from the entire available training set. This method discretizes the space in an uneven manner utilizing the importance of each subspace in the approximation step to guide the size of the alphabet allocated to it. Through this SPARTAN is able to achieve a rich and informative symbolic representation with knowledge extracted from trends across the entire dataset and budgeted by importance of the sampled subspaces.                               |         [9]                   |
-"""
+# | <span style="background-color:DarkSlateGray;color:LavenderBlush;font-weight:bold"> Symbolic Representation </span>  | <span style='background-color:DarkSlateGray;color:LavenderBlush;font-weight:bold'> Description </span> | <span style='background-color:DarkSlateGray;color:LavenderBlush;font-weight:bold'> Reference  </span> |
+# |:------------------|:----------------------------------|:------------------------------------|
+# ||  **SAX and SAX-variant methods**
+# |SAX             | SAX builds on Piecewise Aggregate Approximation to approximate a time series using the means of equal-length, non-overlapping segments of the time series. SAX converts these approximations to symbols by dividing the range of possible values in the number line according to equi-probability sections of a normal distribution with mean zero and unit variance.|                 [2]          |
+# |ESAX              | ESAX uses a similar methodology to SAX but extracts two additional features from each segment: the minimum and maximum value of the segments. This is done in order to capture more information from the segments than the mean, though this triples the storage requiremnts for an equal number of segments between methods.                                |          [3]                 |
+# |TSFSAX              |  TSFSAX introduces a novel trend feature based on trend points in the segments which is later discretized along with the mean.                           |            [4]               |
+# |SAX-DR             | SAX-DR derives an additional categorization of the trend of each segment, classifying each as concave, convex, or linear in order to encode local shape of the segments.                              |           [5]                |
+# |SAX-VFD          |SAX-VFD adopts 18 features from three categories: statistical, entropy and fluctuation features. An optimization process is then applied to determine an optimal feature fector to be used from among these.                         |           [6]                 |
+# |1D-SAX          |1d-SAX extends the classic SAX feature with a new slope feature extracted using linear regression on each segment.|       [7]                     |
+# | |**DFT-Based Representation Method**
+# |SFA           | SFA, leverages Discrete Fourier Transform (DFT) to capture the frequency information from the Fourier domain. In addition, Multiple Coefficient Binning (MCB) is also proposed as the standard discretization technique for alphabet dictionaries                                |        [8]                    |
+# |  | **Newly Proposed Symbolic Representation Method**
+# |SPARTAN              | SPARTAN utilizes a data adaptive dimensionality reduction method to extract information from the entire available training set. This method discretizes the space in an uneven manner utilizing the importance of each subspace in the approximation step to guide the size of the alphabet allocated to it. Through this SPARTAN is able to achieve a rich and informative symbolic representation with knowledge extracted from trends across the entire dataset and budgeted by importance of the sampled subspaces.                               |         [9]                   |
+# """
+
+
+def get_text_description_models():
+    return """
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: DarkSlateGray;
+            color: LavenderBlush;
+            font-weight: bold;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .section-header {
+            background-color: LightGray;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+    <p>We present the models which are being compared here, each with a short description of their methodology and a citation to the work in which they were introduced.</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Symbolic Method</th>
+                <th>Description</th>
+                <th style="text-align: center;">Reference</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="section-header">
+                <td colspan="3">SAX and SAX-Variant Methods</td>
+            </tr>
+            <tr>
+                <td><b>SAX</b></td>
+                <td>SAX builds on Piecewise Aggregate Approximation to approximate a time series using the means of equal-length, non-overlapping segments. SAX converts these approximations to symbols by dividing the range of possible values in the number line according to equi-probability sections of a normal distribution with mean zero and unit variance.</td>
+                <td style="text-align: center;">[2]</td>
+            </tr>
+            <tr>
+                <td><b>ESAX</b></td>
+                <td>ESAX uses a similar methodology to SAX but extracts two additional features from each segment: the minimum and maximum value of the segments. This is done to capture more information from the segments than the mean, though this triples the storage requirements for an equal number of segments between methods.</td>
+                <td style="text-align: center;">[3]</td>
+            </tr>
+            <tr>
+                <td><b>TSFSAX</b></td>
+                <td>TSFSAX introduces a novel trend feature based on trend points in the segments which is later discretized along with the mean.</td>
+                <td style="text-align: center;">[4]</td>
+            </tr>
+            <tr>
+                <td><b>SAX-DR</b></td>
+                <td>SAX-DR derives an additional categorization of the trend of each segment, classifying each as concave, convex, or linear in order to encode local shape of the segments.</td>
+                <td style="text-align: center;">[5]</td>
+            </tr>
+            <tr>
+                <td><b>SAX-VFD</b></td>
+                <td>SAX-VFD adopts 18 features from three categories: statistical, entropy, and fluctuation features. An optimization process is then applied to determine an optimal feature factor to be used among these.</td>
+                <td style="text-align: center;">[6]</td>
+            </tr>
+            <tr>
+                <td><b>1D-SAX</b></td>
+                <td>1D-SAX extends the classic SAX feature with a new slope feature extracted using linear regression on each segment.</td>
+                <td style="text-align: center;">[7]</td>
+            </tr>
+            <tr class="section-header">
+                <td colspan="3">DFT-Based Symbolic Method</td>
+            </tr>
+            <tr>
+                <td><b>SFA</b></td>
+                <td>SFA leverages Discrete Fourier Transform (DFT) to capture frequency information from the Fourier domain. Multiple Coefficient Binning (MCB) is also proposed as the standard discretization technique for alphabet dictionaries.</td>
+                <td style="text-align: center;">[8]</td>
+            </tr>
+            <tr class="section-header">
+                <td colspan="3">Newly Proposed Data-adaptive Symbolic Method</td>
+            </tr>
+            <tr>
+                <td><b>SPARTAN</b></td>
+                <td>SPARTAN utilizes a data-adaptive dimensionality reduction method to extract information from the entire available training set. This method discretizes the space in an uneven manner, utilizing the importance of each subspace in the approximation step to guide the size of the alphabet allocated to it.</td>
+                <td style="text-align: center;">[9]</td>
+            </tr>
+        </tbody>
+    </table>
+    """
+
+
 
 text_1nn_classification_description = f"""
 In this section we present the results for the 1-Nearest Neighbor classification task. In this experiment all methods are given an equal size representation space of 12 symbols per word and an alphabet size of 4 (since SPRATAN dynamically calculates alphabets it is given a bit budget of 24 for this experiment to give an equal number of possible generated words). Each time series is converted to symbolic representations of the appropriate size and classification is carried out by identifying the nearest neighbor of a queried time series in the training set and assigning the same label. This requires a meaningful distance measure over symbolic representations, for fairness it is ideal to use the same distance measure across all representation methods so that no method is unfairly advantaged by a measure which makes use of internal information prior to the symbolic representation step such as histogram breakpoints. To perform this evaluation we suggest a simple but effective metric which takes the L1-distance with respect to the ordered alphabets of symbols, which we reproduce as follows.
@@ -243,8 +338,7 @@ of the 15th International Conference on Extending Database Technology (Berlin,
 Germany) (EDBT ’12). Association for Computing Machinery, New York, NY,
 USA, 516–527. https://doi.org/10.1145/2247596.224765
 
-[9] Ryan DeMilt, Fan Yang, and John Paparrizos. 2024. SPARTAN: Data-adaptive
-Symbolic Representations for Time Series Data Analysis. (2024). Under review
+[9] Fan Yang and John Paparrizos. 2025. SPARTAN: Data-Adaptive Symbolic Time-Series Approximation. Under review.
 
 [10] Janez Demšar. 2006. Statistical Comparisons of Classifiers over Multiple Data
 Sets. J. Mach. Learn. Res. 7 (dec 2006), 1–30.
