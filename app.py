@@ -270,7 +270,7 @@ with tab_desc:
     st.markdown('# SAIL: A Voyage to Symbolic Representation Solutions for Time-Series Analysis')
     st.markdown(description_intro1)
     background = Image.open('./data/sail_demo_pipeline.png')
-    col1, col2, col3 = st.columns([1.2, 5, 0.2])
+    col1, col2, col3 = st.columns([1.2, 5, 1.2])
     col2.image(background, width=900, caption='Overview of the SAIL representation method.')
     st.markdown(description_intro2)
     # st.markdown(description_intro2)
@@ -286,7 +286,7 @@ with tab_dataset:
 with tab_methods:
     st.markdown('# Method Description')
     baseline = Image.open('./data/baseline_methods_v3.png')
-    col1, col2, col3 = st.columns([1.2, 5, 0.2])
+    col1, col2, col3 = st.columns([1.2, 5, 1.2])
     col2.image(baseline, width=900, caption='Summary of basline methods SAX, SFA, and variants.')
     st.markdown(text_description_models,unsafe_allow_html=True)
     spartan_pipeline = Image.open('./data/spartan_pipeline.png')
