@@ -270,7 +270,7 @@ with tab_desc:
     st.markdown('# SAIL: A Voyage to Symbolic Representation Solutions for Time-Series Analysis')
     st.markdown(description_intro1)
     background = Image.open('./data/sail_demo_pipeline.png')
-    col1, col2, col3 = st.columns([1.2, 5, 1.2])
+    col1, col2, col3 = st.columns([1.2, 5, 0.2])
     col2.image(background, width=900, caption='Overview of the SAIL representation method.')
     st.markdown(description_intro2)
     # st.markdown(description_intro2)
@@ -286,7 +286,7 @@ with tab_dataset:
 with tab_methods:
     st.markdown('# Method Description')
     baseline = Image.open('./data/baseline_methods_v3.png')
-    col1, col2, col3 = st.columns([1.2, 5, 1.2])
+    col1, col2, col3 = st.columns([1.2, 5, 0.2])
     col2.image(baseline, width=900, caption='Summary of basline methods SAX, SFA, and variants.')
     st.markdown(text_description_models,unsafe_allow_html=True)
     spartan_pipeline = Image.open('./data/spartan_pipeline.png')
@@ -326,7 +326,7 @@ with tab_classification_accuracy:
         method_metric_2 = option2 + '+' + metric2
 
         if len(methods_family) > 0 and len(datasets) > 0:
-            fig = go.FigureWidget()
+            fig = go.Figure()
             trace1 = fig.add_scattergl(x=box_df[method_metric_1], y=box_df[method_metric_2], mode='markers', name='(' + method_metric_1 + '+'+ method_metric_2 +')',  text=datasets,
                                     textposition="bottom center",
                                     marker = dict(size=10,
@@ -421,7 +421,7 @@ with tab_1nn_classification:
         method_metric_2 = option2 + '+' + 'symbolic-l1'
 
         if len(methods_family) > 0 and len(datasets) > 0:
-            fig = go.FigureWidget()
+            fig = go.Figure()
             trace1 = fig.add_scattergl(x=onenn_box_df[method_metric_1], y=onenn_box_df[method_metric_2], mode='markers', name='(' + method_metric_1 + '+'+ method_metric_2 +')',  text=datasets,
                                     textposition="bottom center",
                                     marker = dict(size=10,
