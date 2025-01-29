@@ -17,6 +17,12 @@ import plotly.express as px
 import os
 
 from barchart import plotly_bar_charts_3d
+from runtime_plot import create_plot_varylen, create_plot_varynum
+
+LINE_WIDTH = 5
+MARKER_SIZE = 13
+FONT_SIZE = 20
+SMALL_FONT_SIZE = 13
 
 st.set_page_config(layout="wide") 
 @st.cache_data
@@ -658,71 +664,94 @@ with tab_tlb:
 
 
 with tab_runtime:
-    st.markdown('# Runtime Analysis')
+    st.markdown('# Accuracy-to-Runtime Analysis')
     st.markdown(text_runtime_description)
 
     runtime_result_option = st.selectbox('Select metric for runtime tradeoff comparison',runtime_options)
 
-    runtime_results_subset = runtime_results[runtime_results['dataset'].isin(datasets)]
+    if runtime_result_option == 'Comapring with varying time-series length':
 
-    runtime_subset_mean = runtime_results_subset.groupby(by='method').agg({'acc':['mean'],'rank':['mean'],'train_time':['sum'],'pred_time':['sum'],'total_time':['sum']})
-    runtime_subset_mean.reset_index(inplace=True)
-    runtime_subset_mean.columns = runtime_subset_mean.columns.droplevel(1)
-
-    runtime_col1,runtime_col2, runtime_col3 = st.columns(3)
-
-    with runtime_col1:
-
-        st.markdown('## Total Runtime vs. Accuracy Comparison (Train+Inference)')
-        runtime_subset_mean.rename(columns={'train_time':'Training Runtime (ms/sample)','pred_time':'Inference Runtime (ms/sample)','total_time':'Total Runtime (ms/sample)','acc':'Mean Accuracy','rank':'Mean Rank'},inplace=True)
-        fig = px.scatter(runtime_subset_mean,x='Total Runtime (ms/sample)',y=runtime_result_option,color='method',log_x=True)
-        fig.update_traces(marker_size=10)
-        if runtime_result_option == 'Mean Rank':
-            fig.update_layout(
-                yaxis = dict(autorange="reversed")
-            )
-        fig.update_layout( 
-                        width=600, 
-                        height=600, 
-                        template="plotly_white", 
-                        font=dict(
-                                size=39,
-                                color="black"))
-        st.plotly_chart(fig)
-    with runtime_col2:
-        st.markdown('## Training Runtime vs. Accuracy Comparison')
-        fig = px.scatter(runtime_subset_mean,x='Training Runtime (ms/sample)',y=runtime_result_option,color='method',log_x=True)
-        fig.update_traces(marker_size=10)
-        if runtime_result_option == 'Mean Rank':
-            fig.update_layout(
-                yaxis = dict(autorange="reversed")
-            )
-        fig.update_layout( 
-                        width=600, 
-                        height=600, 
-                        template="plotly_white", 
-                        font=dict(
-                                size=39,
-                                color="black"))
+        fig_accuracy, fig_runtime = create_plot_varylen(df_accuracy_varylen, 
+                                                        df_runtime_varylen, 
+                                                        LINE_WIDTH = LINE_WIDTH, 
+                                                        MARKER_SIZE = MARKER_SIZE, 
+                                                        FONT_SIZE = FONT_SIZE, 
+                                                        SMALL_FONT_SIZE = SMALL_FONT_SIZE)
+    
+    else:
+        fig_accuracy, fig_runtime = create_plot_varynum(df_accuracy_varynum, 
+                                                        df_runtime_varynum, 
+                                                        LINE_WIDTH = LINE_WIDTH, 
+                                                        MARKER_SIZE = MARKER_SIZE, 
+                                                        FONT_SIZE = FONT_SIZE, 
+                                                        SMALL_FONT_SIZE = SMALL_FONT_SIZE)
     
 
-        st.plotly_chart(fig)
-    with runtime_col3:
-        st.markdown('## Inference Runtime vs. Accuracy Comparison')
-        fig = px.scatter(runtime_subset_mean,x='Inference Runtime (ms/sample)',y=runtime_result_option,color='method',log_x=True)
-        fig.update_traces(marker_size=10)
-        if runtime_result_option == 'Mean Rank':
-            fig.update_layout(
-                yaxis = dict(autorange="reversed")
-            )
-        fig.update_layout( 
-                        width=600, 
-                        height=600, 
-                        template="plotly_white", 
-                        font=dict(
-                                size=39,
-                                color="black"))
-        st.plotly_chart(fig)
+    # # Streamlit App Layout
+    # st.title("Time-Series Performance Comparison")
+
+    # Create Two Columns
+    col1, col2 = st.columns([1, 1])  # Two equal-sized columns
+
+    # Display Plots in Respective Columns
+    with col1:
+        st.plotly_chart(fig_accuracy, use_container_width=True)
+
+    with col2:
+        st.plotly_chart(fig_runtime, use_container_width=True)
+
+    # with runtime_col1:
+
+    #     st.markdown('## Total Runtime vs. Accuracy Comparison (Train+Inference)')
+    #     runtime_subset_mean.rename(columns={'train_time':'Training Runtime (ms/sample)','pred_time':'Inference Runtime (ms/sample)','total_time':'Total Runtime (ms/sample)','acc':'Mean Accuracy','rank':'Mean Rank'},inplace=True)
+    #     fig = px.scatter(runtime_subset_mean,x='Total Runtime (ms/sample)',y=runtime_result_option,color='method',log_x=True)
+    #     fig.update_traces(marker_size=10)
+    #     if runtime_result_option == 'Mean Rank':
+    #         fig.update_layout(
+    #             yaxis = dict(autorange="reversed")
+    #         )
+    #     fig.update_layout( 
+    #                     width=600, 
+    #                     height=600, 
+    #                     template="plotly_white", 
+    #                     font=dict(
+    #                             size=39,
+    #                             color="black"))
+    #     st.plotly_chart(fig)
+    # with runtime_col2:
+    #     st.markdown('## Training Runtime vs. Accuracy Comparison')
+    #     fig = px.scatter(runtime_subset_mean,x='Training Runtime (ms/sample)',y=runtime_result_option,color='method',log_x=True)
+    #     fig.update_traces(marker_size=10)
+    #     if runtime_result_option == 'Mean Rank':
+    #         fig.update_layout(
+    #             yaxis = dict(autorange="reversed")
+    #         )
+    #     fig.update_layout( 
+    #                     width=600, 
+    #                     height=600, 
+    #                     template="plotly_white", 
+    #                     font=dict(
+    #                             size=39,
+    #                             color="black"))
+    
+
+    #     st.plotly_chart(fig)
+    # with runtime_col3:
+    #     st.markdown('## Inference Runtime vs. Accuracy Comparison')
+    #     fig = px.scatter(runtime_subset_mean,x='Inference Runtime (ms/sample)',y=runtime_result_option,color='method',log_x=True)
+    #     fig.update_traces(marker_size=10)
+    #     if runtime_result_option == 'Mean Rank':
+    #         fig.update_layout(
+    #             yaxis = dict(autorange="reversed")
+    #         )
+    #     fig.update_layout( 
+    #                     width=600, 
+    #                     height=600, 
+    #                     template="plotly_white", 
+    #                     font=dict(
+    #                             size=39,
+    #                             color="black"))
+    #     st.plotly_chart(fig)
 
 with tab_references:
     st.markdown('# References')

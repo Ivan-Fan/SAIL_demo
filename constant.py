@@ -31,7 +31,7 @@ classification_types = ['1NN','BOP']
 bop_metrics_list = ['Euclid','BOSS','Cosine','KL-Div']
 onenn_metrics_list = ['symbolic-l1']
 
-runtime_options = ['Mean Accuracy', 'Mean Rank']
+runtime_options = ['Comapring with varying number of time series','Comapring with varying time-series length']
 
 word_sizes = np.arange(2,9,1)
 alphabet_sizes = np.arange(3,11,1)
@@ -347,3 +347,52 @@ Sets. J. Mach. Learn. Res. 7 (dec 2006), 1–30.
 in the presence of noise. Data Min. Knowl. Discov. 29, 6 (nov 2015), 1505–1530.
 https://doi.org/10.1007/s10618-014-0377-7
 """
+
+
+# Sample Data (Modify as Needed)
+data_accuracy_varylen = {
+    "Time-series length": [128, 640, 1280, 6400, 12800, 64000, 128000],
+    "SAX": [0.9, 0.783333, 0.592222, 0.592222, 0.216667, 0.216667, 0.335556],
+    "SFA": [0.99, 0.298889, 0.321111, 0.353333, 0.348889, 0.34, 0.344444],
+    "SPARTAN": [0.991111, 0.991111, 0.991111, 0.991111, 0.991111, 0.991111, 0.991111],
+    "SPARTAN-R": [0.991111, 0.991111, 0.991111, 0.991111, 0.991111, 0.991111, 0.991111],
+    "SPARTAN-S": [0.9807, 0.9818, 0.9729, 0.9767, 0.9716, 0.9718, 0.9764],
+}
+
+data_runtime_varylen = {
+    "Time-series length": [128, 640, 1280, 6400, 12800, 64000, 128000],
+    "SAX": [0.00008,0.00021,0.00054,0.00391,0.00746,0.0361,0.072],
+    "SFA": [0.000975,0.00645,0.0148,0.108,0.240,1.37,2.88],
+    "SPARTAN": [0.00976,0.128,0.367,1.46,2.80,14.2,32.2],
+    "SPARTAN-R": [0.0049,0.021,0.04,0.25,0.52,2.68,5.35],
+    "SPARTAN-S": [0.00146,0.00396,0.00756,0.0475,0.0977,0.493,0.9],
+}
+
+# Convert DataFrames to Long Format for Plotly
+df_accuracy_varylen = pd.DataFrame(data_accuracy_varylen).melt(id_vars=["Time-series length"], var_name="Method", value_name="Accuracy")
+df_runtime_varylen = pd.DataFrame(data_runtime_varylen).melt(id_vars=["Time-series length"], var_name="Method", value_name="Runtime (s)")
+
+
+
+# Sample Data (Modify as Needed)
+data_accuracy_varynum = {
+    "Number of Time-series": [1e3, 5e3, 1e4, 5e4, 1e5, 5e5, 1e6],
+    "SAX": [0.93, 0.936667, 0.935556, 0.935556, 0.935556, 0.935556,0.935556],
+    "SFA": [0.985556,0.991111,0.992222,0.992222,0.991111,0.991111,0.991111],
+    "SPARTAN": [0.986667, 0.9933, 0.9889, 0.9933, 0.9944, 0.9967,0.9967],
+    "SPARTAN-R": [0.986667, 0.9933, 0.9889, 0.9933, 0.9944, 0.9967,0.9967],
+    "SPARTAN-S": [0.9753, 0.9898, 0.99, 0.9951, 0.9924, 0.9917, 0.994],
+}
+
+data_runtime_varynum = {
+    "Number of Time-series": [128, 640, 1280, 6400, 12800, 64000, 128000],
+    "SAX": [0.00009,0.00022,0.00037,0.00239,0.00475,0.02706,0.04668],
+    "SFA": [0.0015,0.00334,0.00661,0.0394,0.0788,0.391,0.802],
+    "SPARTAN": [0.00998,0.0443,0.0781,0.529,1.26,7.67,15.6],
+    "SPARTAN-R": [0.00514,0.021,0.04,0.28,0.59,3.26,6.91],
+    "SPARTAN-S": [0.00146,0.00304,0.00472,0.0218,0.0384,0.166,0.325],
+}
+
+# Convert DataFrames to Long Format for Plotly
+df_accuracy_varynum = pd.DataFrame(data_accuracy_varynum).melt(id_vars=["Number of Time-series"], var_name="Method", value_name="Accuracy")
+df_runtime_varynum = pd.DataFrame(data_runtime_varynum).melt(id_vars=["Number of Time-series"], var_name="Method", value_name="Runtime (s)")
