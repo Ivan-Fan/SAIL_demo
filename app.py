@@ -428,10 +428,10 @@ with tab_desc:
     st.markdown(description_intro1)
 
     # Load image
-    background = Image.open('./data/sail_demo_pipeline.png')
+    background = Image.open('data/demo_spartan_pipeline_update.png')
 
     # Center align the image and add a caption
-    col1, col2, col3 = st.columns([1, 5, 1])  # Adjust column widths for centering
+    col1, col2, col3 = st.columns([2, 5, 2])  # Adjust column widths for centering
     with col2:
         st.image(background, use_container_width=True)
         st.markdown("<p style='text-align: center; font-style: italic;'>Overview of the SAIL representation method.</p>", unsafe_allow_html=True)
@@ -466,7 +466,7 @@ with tab_methods:
         st.markdown("<p style='text-align: center; font-style: italic;'>Summary of baseline methods SAX, variants, and SFA.</p>", unsafe_allow_html=True)
 
     # Load and display the SPARTAN pipeline image
-    spartan_pipeline = Image.open('./data/spartan_pipeline.png')
+    spartan_pipeline = Image.open('./data/spartan_pipeline_v3.png')
     col1, col2, col3 = st.columns([1, 5, 1])  # Center alignment
     with col2:
         st.image(spartan_pipeline, use_container_width=True)
@@ -972,6 +972,18 @@ with tab_runtime:
     st.markdown('# Accuracy-to-Runtime Analysis')
     st.markdown(text_runtime_description)
 
+    # add runtime analysis (UCR)
+    st.markdown('## Analysis #1: 128 UCR datasets')
+    background = Image.open('data/runtime_analysis_ucr.png')
+
+    # Center align the image and add a caption
+    col1, col2, col3 = st.columns([2, 5, 2])  # Adjust column widths for centering
+    with col2:
+        st.image(background, use_container_width=True)
+        st.markdown("<p style='text-align: center; font-style: italic;'>SPARTAN family versus top baseline methods on 128 UCR datasets.</p>", unsafe_allow_html=True)
+
+    # add runtime analysis (large scale datasets)
+    st.markdown('## Analysis #2: Large-scale datasets')
     runtime_result_option = st.selectbox('Select metric for runtime tradeoff comparison',runtime_options)
 
     if runtime_result_option == 'Comapring with varying time-series length':
