@@ -158,8 +158,8 @@ def graph_ranks(avranks, names, cd=None, cdmethod=None, lowv=None, highv=None,
 
     k = len(ssums)
 
-    a = 0.4
-    b = a + 0.1
+    a = 0.6
+    b = a + 0.2
 
     for i in range(math.ceil(k / 2)):
         chei = cline + minnotsignificant + i * 0.24
@@ -215,3 +215,6 @@ def graph_ranks(avranks, names, cd=None, cdmethod=None, lowv=None, highv=None,
         print_figure(fig, filename, **kwargs)
 
     return fig
+
+
+

@@ -7,3 +7,6 @@ numpy
 seaborn
 plotly
 ipywidgets
+scipy
+scikit_posthocs
+networkx

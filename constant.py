@@ -25,11 +25,15 @@ def compute_CD(avranks, n, alpha="0.05", test="nemenyi"):
 
 methods = ['SAX','SFA','SPARTAN']
 onenn_methods_list =['SAX','SFA','SPARTAN','SAX-DR','SAX_VFD','TFSAX','1d-SAX','ESAX']
+clustering_methods_list = ['SAX','SFA','SPARTAN']
+
+AD_methods_list = ['SAX','SFA','SPARTAN']
 
 classification_types = ['1NN','BOP']
 
 bop_metrics_list = ['Euclid','BOSS','Cosine','KL-Div']
 onenn_metrics_list = ['symbolic-l1']
+clustering_metrics_list = ['symbolic-l1']
 
 runtime_options = ['Comapring with varying number of time series','Comapring with varying time-series length']
 
@@ -183,8 +187,8 @@ def get_text_description_models():
             text-align: left;
         }
         th {
-            background-color: DarkSlateGray;
-            color: LavenderBlush;
+            background-color: #eae7e7; /* DarkSlateGray */
+            /*color: LavenderBlush;*/
             font-weight: bold;
         }
         tr:nth-child(even) {
@@ -194,7 +198,7 @@ def get_text_description_models():
             background-color: #f1f1f1;
         }
         .section-header {
-            background-color: LightGray;
+            background-color: #f1f1f1; /* #f1f1f1 LightGray*/
             font-weight: bold;
             text-align: center;
         }
@@ -278,6 +282,10 @@ text_1nn_classification_description_2 = f"""
     We provide functionality to view the classification results through multiple views, each explained with text on the corresponding view, along with analysis of the results.
 """
 
+text_clustering_description = f"""
+To better understand the representation ability in the unsupervised task, we extend our analysis beyond 1NN Classification, to the clus- tering problem. This challenging downstream task enables us to fairly assess the representation quality in the absence of labeled data. To properly perform clustering on SP representation, we adopt PAM, a widely used partitional clustering method, which searches for cluster centers within actual data samples. Symbolic L1 distance is utilized as the dissimilarity measure. All methods are evaluated by Rand Index.
+"""
+
 text_boxplot_explanation = f"""
 This panel presents a boxplot displaying the average classification accuracy for this task and allows the user to select which methods they would like to examine the accuracy for, the second selection box allows the user to choose from among the available metrics for the classification type being displayed. Below this plot the user can find a table of the raw classification accuracies for each method and each dataset for a full comparison.
 """
@@ -296,6 +304,10 @@ The second classification task we present is the Bag-Of-Words task. In this task
 
 text_tlb_description = f"""
 We show here the comparison of SAX, SFA, and SPARTAN on lower bounding the euclidean distance, when equipped with a function MINDIST which is guaranteed to lower bound the euclidean distance. We note that SFA does not include a lower bouding distance between two symbolic representations in its work, presenting a lower bound between a non discretized DFT and an SFA representation. Due to this we show TLB results for SFA using a modified MINDIST function, this function holds as a lower bound for the euclidean distance in most cases but does not have a corresponding proof. Therefore the primary comparison is with SAX in this case and SFA is included for completeness. WE present comparative plots for the tightness of lower bound as the word length and alphabet size parameters scale for each method. We also present a critical diagram to show a statistical comparison of the tightness of lower bounding capabilities between methods.
+"""
+
+text_ad_description = f"""
+Compared with 1NN classification and clustering, which assess the general represen- tation ability of symbolic methods, anomaly detection downstream task challenges the methods to properly capture both normal and abnormal patterns. Enlightened by this, we add this anomaly de- tection evaluation on TSB-UAD dastaset [12] as a complement to evaluate candidate methods from different angles. Specifically, we employ BOP representation with the K-Nearest-Neighbor (K-NN) detector, a general anomaly detector independent of sym- bolic methods, with Symbolic L1 as the default distance measure.
 """
 
 text_runtime_description = f"""
@@ -346,6 +358,8 @@ Sets. J. Mach. Learn. Res. 7 (dec 2006), 1–30.
 [11] Patrick Schäfer. 2015. The BOSS is concerned with time series classification
 in the presence of noise. Data Min. Knowl. Discov. 29, 6 (nov 2015), 1505–1530.
 https://doi.org/10.1007/s10618-014-0377-7
+
+[12] Paparrizos, J., Kang, Y., Boniol, P., Tsay, R. S., Palpanas, T., & Franklin, M. J. (2022). TSB-UAD: an end-to-end benchmark suite for univariate time-series anomaly detection. Proceedings of the VLDB Endowment, 15(8), 1697-1711.
 """
 
 
