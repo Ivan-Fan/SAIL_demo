@@ -752,7 +752,7 @@ with tab_clustering:
             fig.update_yaxes(tickfont_size=16)
             st.plotly_chart(fig, key='clustering_pairwise')
     with tab_clustering_stats:
-        st.markdown(text_cd_diagram_explanation)
+        st.markdown("Here we present the the critical difference diagram for our results with statistical test. This diagram aims to rigourously evaluate the performance of multiple method over multiple datasets. For simplicity, we present the evaluation comparison of SPARTAN versus the top 2 symbolic methods, SAX and SFA.")
         clustering_metric_options = clustering_metrics_list
         cd_clustering_df = clustering_results
         clustering_methods_list = clustering_methods_list
