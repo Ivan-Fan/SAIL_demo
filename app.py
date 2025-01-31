@@ -277,50 +277,13 @@ def plot_tlb_stat_plot(df,datasets,stat_methods_family):
 
             stat_plots(df)
 
-# st.markdown("""
-# <style>
-#     [data-testid=stSidebar] {
-#         background-color: #f8b1a1; /* change to different color: default: cf271b */
-#     }
-# </style>
-# """, unsafe_allow_html=True)
-
-# st.markdown(
-#     """
-#     <style>
-#         /* Change sidebar background color */
-#         [data-testid="stSidebar"] {
-#             background-color: #f8b1a1;  /* Light peach */
-#         }
-
-#         /* Change the background color of the multiselect choice buttons */
-#         div[data-testid="stMultiSelect"] > div {
-#             background-color: white;  /* Change to desired color */
-#             color: #f8b1a1;  /* Change text color */
-#             border-radius: 8px;  /* Add rounded corners */
-#             padding: 5px 10px;  /* Adjust padding */
-#         }
-
-#         /* Change the close (X) button color inside multiselect */
-#         div[data-testid="stMultiSelect"] span {
-#             color: white;
-#         }
-
-#         /* Change hover effect */
-#         div[data-testid="stMultiSelect"] > div:hover {
-#             background-color: #f8b1a1;  /* Darker shade for hover */
-#         }
-#     </style>
-#     """,
-#     unsafe_allow_html=True
-# )
 
 st.markdown(
     """
     <style>
         /* Change sidebar background color */
         [data-testid="stSidebar"] {
-            background-color: #f3d0c8  !important;  /* Light peach  #f8b1a1 */
+            background-color: #d2e7f6  !important;  /* Light peach  #f8b1a1 f3d0c8 */
         }
 
         [data-testid="stSidebar"] h1 {
@@ -408,7 +371,7 @@ with st.sidebar:
     # else: methods_family = container_method.multiselect('Select a group of methods',methods, key='selector_methods')
 
 # tab_desc, tab_acc, tab_time, tab_stats, tab_analysis, tab_misconceptions, tab_ablation, tab_dataset, tab_method = st.tabs(["Description", "Evaluation", "Runtime", "Statistical Tests", "Comparative Analysis", "Misconceptions", "DNN Ablation Analysis", "Datasets", "Methods"]) 
-tab_desc, tab_dataset,tab_methods,tab_1nn_classification,tab_classification_accuracy,tab_clustering,tab_tlb,tab_ad, tab_runtime,tab_references = st.tabs(["Description", "Datasets",'Methods',"1NN-Classification Accuracy","BOP Classification Accuracy","Clustering","Tightness of Lower Bound", "Anomaly Detection", "Runtime Analysis","References"]) 
+tab_desc, tab_dataset,tab_methods,tab_1nn_classification,tab_classification_accuracy,tab_clustering,tab_tlb,tab_ad, tab_runtime,tab_references = st.tabs(["Overview", "Datasets",'Methods',"1NN-Classification Accuracy","BOP Classification Accuracy","Clustering","Tightness of Lower Bound", "Anomaly Detection", "Runtime Analysis","References"]) 
 
 
 # with tab_desc:
@@ -505,7 +468,7 @@ with tab_classification_accuracy:
         option1 = st.selectbox('Method 1',tuple(methods),index=0)
         metric1 = st.selectbox('Metric 1',bop_metrics_list,index=0)
         # methods_family = methods_family[1:] + methods_family[:1]
-        option2 = st.selectbox('Method 2',tuple(methods),index=0)
+        option2 = st.selectbox('Method 2',tuple(methods),index=2)
         metric2 = st.selectbox('Metric 2',bop_metrics_list,index=0)
 
         method_metric_1 = option1 + '+' + metric1
@@ -562,14 +525,14 @@ with tab_classification_accuracy:
         methods_list = methods
 
         container_cd = st.container()
-        all_cd_metrics = st.checkbox('Select all',key='all_cd_metrics_bop',value=True)
-        if all_cd_metrics: cd_metric = container_cd.multiselect('Select metric',metric_options,metric_options,key='selector_cd_metrics_all_bop')
-        else: cd_metric = container_cd.multiselect('Select metric',metric_options,key='selector_cd_metrics_bop')
+        all_cd_metrics = st.checkbox('Select all',key='all_cd_metrics_bop',value=False)
+        if all_cd_metrics: cd_metric = container_cd.multiselect('Select metric',metric_options,['Euclid'],key='selector_cd_metrics_all_bop')
+        else: cd_metric = container_cd.multiselect('Select metric',metric_options,['Euclid'],key='selector_cd_metrics_bop')
 
         container_cd_accuracy_method = st.container()
-        all_cd_method = st.checkbox("Select all",key='all_cd_method_bop',value=True)
+        all_cd_method = st.checkbox("Select all",key='all_cd_method_bop',value=False)
         if all_cd_method: cd_methods_family = container_cd_accuracy_method.multiselect('Select a group of methods', methods_list, methods_list, key='selector_cd_methods_all_bop')
-        else: cd_methods_family = container_cd_accuracy_method.multiselect('Select a group of methods',methods_list, key='selector_cd_methods_bop')
+        else: cd_methods_family = container_cd_accuracy_method.multiselect('Select a group of methods',methods_list,methods_list, key='selector_cd_methods_bop')
 
         cd_df_subset = generate_dataframe(cd_df,datasets,cd_methods_family,cd_metric)
         plot_stat_plot(cd_df_subset,datasets,cd_methods_family,cd_metric,'bop')
@@ -581,27 +544,35 @@ with tab_1nn_classification:
     st.markdown(text_1nn_classification_description_2)
 
     tab_1nn_boxplot,tab_1nn_pairwise,tab_1nn_stats = st.tabs(['Boxplot','Pairwise','Statistical Tests'])
+
+    onenn_methods_list_default = onenn_methods_list.copy()
+    if 'SAX_VFD' in onenn_methods_list:
+        onenn_methods_list_default.remove('SAX_VFD')
+            
+
     with tab_1nn_boxplot:
 
         st.markdown(text_boxplot_explanation)
         
         container_1nn_accuracy_method = st.container()
-        all_onenn_method = st.checkbox("Select all",key='all_onenn_method',value=True)
-        if all_onenn_method: onenn_methods_family = container_1nn_accuracy_method.multiselect('Select a group of methods', onenn_methods_list, onenn_methods_list, key='selector_onenn_methods_all')
-        else: onenn_methods_family = container_1nn_accuracy_method.multiselect('Select a group of methods',onenn_methods_list, key='selector_onenn_methods')
+        all_onenn_method = st.checkbox("Select all",key='all_onenn_method',value=False)
+        
+        if all_onenn_method: onenn_methods_family = container_1nn_accuracy_method.multiselect('Select a group of methods', onenn_methods_list, onenn_methods_list_default, key='selector_onenn_methods_all')
+        else: onenn_methods_family = container_1nn_accuracy_method.multiselect('Select a group of methods',onenn_methods_list, onenn_methods_list_default, key='selector_onenn_methods')
 
         container_1nn_accuracy_metric = st.container()
-        all_onenn_metric = st.checkbox('Select all',key='all_onenn_metrics',value=True)
+        all_onenn_metric = st.checkbox('Select all',key='all_onenn_metrics',value=False)
         if all_onenn_metric: onenn_metrics = container_1nn_accuracy_metric.multiselect('Select metric',onenn_metrics_list,onenn_metrics_list)
-        else: onenn_metrics = container_1nn_accuracy_metric.multiselect('Select metric',onenn_metrics_list)
+        else: onenn_metrics = container_1nn_accuracy_metric.multiselect('Select metric',onenn_metrics_list,onenn_metrics_list)
 
         onenn_box_df = generate_dataframe(onenn_results,datasets,onenn_methods_family,onenn_metrics)
         plot_boxplot(onenn_box_df,onenn_metrics,datasets,onenn_methods_family,key='onenn_classification')
+    
     with tab_1nn_pairwise:
         st.markdown(text_pairwise_comparison)
-        option1 = st.selectbox('Method 1',onenn_methods_list,index=0)
+        option1 = st.selectbox('Method 1',onenn_methods_list, index=0)
         # methods_family = methods_family[1:] + methods_family[:1]
-        option2 = st.selectbox('Method 2',onenn_methods_list,index=0)
+        option2 = st.selectbox('Method 2',onenn_methods_list, index=2)
 
         method_metric_1 = option1 + '+' + 'symbolic-l1'
         method_metric_2 = option2 + '+' + 'symbolic-l1'
@@ -650,6 +621,7 @@ with tab_1nn_classification:
             fig.update_xaxes(tickfont_size=16)
             fig.update_yaxes(tickfont_size=16)
             st.plotly_chart(fig)
+    
     with tab_1nn_stats:
         st.markdown(text_cd_diagram_explanation)
         metric_options = onenn_metrics_list
@@ -657,14 +629,18 @@ with tab_1nn_classification:
         methods_list = onenn_methods_list
 
         container_cd = st.container()
-        all_cd_metrics = st.checkbox('Select all',key='all_cd_metrics_1nn',value=True)
+        all_cd_metrics = st.checkbox('Select all',key='all_cd_metrics_1nn',value=False)
         if all_cd_metrics: cd_metric = container_cd.multiselect('Select metric',metric_options,metric_options,key='selector_cd_metrics_all_1nn')
-        else: cd_metric = container_cd.multiselect('Select metric',metric_options,key='selector_cd_metrics_1nn')
+        else: cd_metric = container_cd.multiselect('Select metric',metric_options,metric_options,key='selector_cd_metrics_1nn')
+
+        methods_list_default = methods_list.copy()
+        if 'SAX_VFD' in methods_list:
+            methods_list_default.remove('SAX_VFD')
 
         container_cd_accuracy_method = st.container()
-        all_cd_method = st.checkbox("Select all",key='all_cd_method_1nn',value=True)
-        if all_cd_method: cd_methods_family = container_cd_accuracy_method.multiselect('Select a group of methods', methods_list, methods_list, key='selector_cd_methods_all_1nn')
-        else: cd_methods_family = container_cd_accuracy_method.multiselect('Select a group of methods',methods_list, key='selector_cd_methods_1nn')
+        all_cd_method = st.checkbox("Select all",key='all_cd_method_1nn',value=False)
+        if all_cd_method: cd_methods_family = container_cd_accuracy_method.multiselect('Select a group of methods', methods_list, methods_list_default, key='selector_cd_methods_all_1nn')
+        else: cd_methods_family = container_cd_accuracy_method.multiselect('Select a group of methods',methods_list, methods_list_default, key='selector_cd_methods_1nn')
 
         cd_df_subset = generate_dataframe(cd_df,datasets,cd_methods_family,cd_metric)
         plot_stat_plot(cd_df_subset,datasets,cd_methods_family,cd_metric,'1nn')
@@ -722,7 +698,7 @@ with tab_clustering:
         st.markdown(text_pairwise_comparison)
         option1 = st.selectbox('Clustering Method 1',clustering_methods_list,index=0)
         # methods_family = methods_family[1:] + methods_family[:1]
-        option2 = st.selectbox('Clustering Method 2',clustering_methods_list,index=0)
+        option2 = st.selectbox('Clustering Method 2',clustering_methods_list,index=2)
 
         method_metric_1 = option1 + '+' + 'symbolic-l1'
         method_metric_2 = option2 + '+' + 'symbolic-l1'

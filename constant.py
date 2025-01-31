@@ -92,7 +92,9 @@ list_seq_length = ['VERY-SMALL(<100)', 'SMALL(<300)', 'MEDIUM(<500)', 'LARGE(<10
 
 list_num_clusters = ['VERY-SMALL(<10)', 'SMALL(<20)', 'MEDIUM(<40)', 'LARGE(>40)']
 
-list_measures = ['symbolic-l1','Euclid','BOSS','Cosine','KL-Div']
+# list_measures = ['symbolic-l1','Euclid','BOSS','Cosine','KL-Div']
+
+list_measures = ['Euclid']
 
 list_length = [16,32,64,128,256,512,768,1024]
 

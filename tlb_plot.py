@@ -15,9 +15,11 @@ def plot_fixed_w_3dbar(df, w, font_size=8):
     # set up params for plotting
     alpha = 0.5
     x_scale = 0.4
-    cmap = cm.YlGnBu
+    # cmap = cm.YlGnBu
+    cmap = cm.coolwarm
     norm = Normalize(vmin=0, vmax=2)  # Normalize based on the number of methods
-    row_colors = cmap(norm(np.array([2,0.8,0])))
+    # row_colors = cmap(norm(np.array([2,0.8,0])))
+    row_colors = ['#fab8a9', '#f7dcbc', '#bcdef7']
 
     # add labels for method and parameters
     x_labels = ['SPARTAN','SFA', 'SAX']
@@ -72,7 +74,8 @@ def plot_fixed_a_3dbar(df, a, font_size=8):
     x_scale = 0.4
     cmap = cm.YlGnBu
     norm = Normalize(vmin=0, vmax=2)  # Normalize based on the number of methods
-    row_colors = cmap(norm(np.array([2,0.8,0])))
+    # row_colors = cmap(norm(np.array([2,0.8,0])))
+    row_colors = ['#fab8a9', '#f7dcbc', '#bcdef7']
 
     # add labels for method and parameters
     x_labels = ['SPARTAN','SFA', 'SAX']
